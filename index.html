@@ -3,6 +3,7 @@
 <head>
     <title>Jeff Alerta | Resume</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,10 +23,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .profile-text h1 {
-            margin-bottom: 10px;
         }
 
         .profile-img {
@@ -56,33 +53,76 @@
             border-radius: 10px;
         }
 
-        ul {
-            padding-left: 20px;
+        /* ===================== */
+        /* FILTER BUTTONS */
+        .filters {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        li {
-            margin-bottom: 10px;
-        }
-
-        /* 🔥 PROJECT GRID */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .gallery img {
-            width: 100%;
-            border-radius: 10px;
+        .filters button {
+            background: #1f2937;
+            color: white;
+            border: 1px solid #3b82f6;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        .gallery img:hover {
-            transform: scale(1.05);
+        .filters button:hover,
+        .filters button.active {
+            background: #3b82f6;
         }
 
-        /* 🔥 MODAL LIGHTBOX */
+        /* ===================== */
+        /* GALLERY */
+        .gallery {
+            display: flex;
+            gap: 15px;
+            overflow: hidden;
+        }
+
+        .project {
+            position: relative;
+            flex: 0 0 33%;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.6s ease;
+        }
+
+        .project.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* HOVER OVERLAY */
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            width: 100%;
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            text-align: center;
+            font-weight: bold;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .project:hover .overlay {
+            opacity: 1;
+        }
+
+        /* ===================== */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -95,11 +135,14 @@
             background-color: rgba(0,0,0,0.9);
         }
 
-        .modal-content {
+        .modal-box {
+            background: #1f2937;
             margin: auto;
-            display: block;
+            padding: 30px;
             width: 80%;
-            max-width: 800px;
+            max-width: 600px;
+            border-radius: 10px;
+            text-align: center;
         }
 
         .close {
@@ -119,9 +162,12 @@
             color: #9ca3af;
         }
 
-        @media(max-width: 768px){
+        @media(max-width:768px){
             .gallery {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+            }
+            .project {
+                flex: 100%;
             }
         }
     </style>
@@ -131,7 +177,7 @@
 
 <header>
     <div class="profile-container">
-        <div class="profile-text">
+        <div>
             <h1>Jeff Alerta</h1>
             <p>Digital Marketing | GHL Specialist | Tech Professional</p>
         </div>
@@ -140,48 +186,60 @@
 </header>
 
 <section>
-    <h2>OBJECTIVE</h2>
-    <div class="box">
-        <p>
-        Tech-savvy and results-driven professional with a strong foundation in technology solutions and digital tools, seeking a role where I can leverage my technical expertise and creative online marketing skills to drive business growth, enhance digital presence, and implement innovative strategies for measurable impact.
-        </p>
-    </div>
-</section>
-
-<section>
-    <h2>QUALIFICATIONS</h2>
-    <div class="box">
-        <ul>
-            <li>National TVET Trainer Certificate – Level 1 in Computer Systems Servicing NCII</li>
-            <li>National Certificate in TRAINERS METHODOLOGY LEVEL 1</li>
-            <li>Freelance 2D and 3D Designer</li>
-            <li>TESDA Certified – Programming (JAVA) NCIII</li>
-            <li>TESDA Certified - Computer System Servicing NC II</li>
-            <li>TESDA Certified - RAC Servicing (DomRAC) NC II</li>
-            <li>TESDA Certified – AutoCad Operator</li>
-            <li>GoHighLevel (GHL) CRM and Marketing Automation</li>
-            <li>Business Intelligence and Basic Data Warehousing</li>
-            <li>Basic knowledge in construction works (estimate and design)</li>
-        </ul>
-    </div>
-</section>
-
-<section>
     <h2>SCREENSHOT OF THE PROJECTS</h2>
-    <div class="gallery">
-        <img src="project1.jpg" onclick="openModal(this.src)">
-        <img src="project2.jpg" onclick="openModal(this.src)">
-        <img src="project3.jpg" onclick="openModal(this.src)">
-        <img src="project4.jpg" onclick="openModal(this.src)">
-        <img src="project5.jpg" onclick="openModal(this.src)">
-        <img src="project6.jpg" onclick="openModal(this.src)">
+
+    <!-- FILTER BUTTONS -->
+    <div class="filters">
+        <button onclick="filterProjects('all')" class="active">All</button>
+        <button onclick="filterProjects('ghl')">GHL</button>
+        <button onclick="filterProjects('design')">Design</button>
+        <button onclick="filterProjects('crm')">CRM</button>
+        <button onclick="filterProjects('ads')">Ads</button>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="gallery" id="gallery">
+
+        <div class="project ghl" onclick="openModal('GHL Funnel Build','Built automation funnels with booking system.')">
+            <img src="project1.jpg">
+            <div class="overlay">GHL Funnel</div>
+        </div>
+
+        <div class="project design" onclick="openModal('Graphic Design','Created branding and social visuals.')">
+            <img src="project2.jpg">
+            <div class="overlay">Design Project</div>
+        </div>
+
+        <div class="project crm" onclick="openModal('CRM Setup','Built pipelines and automated workflows.')">
+            <img src="project3.jpg">
+            <div class="overlay">CRM Automation</div>
+        </div>
+
+        <div class="project ads" onclick="openModal('Facebook Ads','Lead generation campaign setup.')">
+            <img src="project4.jpg">
+            <div class="overlay">Ads Campaign</div>
+        </div>
+
+        <div class="project ghl" onclick="openModal('Booking Calendar','Configured calendar + reminders.')">
+            <img src="project5.jpg">
+            <div class="overlay">GHL Calendar</div>
+        </div>
+
+        <div class="project design" onclick="openModal('Website UI','Modern responsive web UI design.')">
+            <img src="project6.jpg">
+            <div class="overlay">Website Design</div>
+        </div>
+
     </div>
 </section>
 
-<!-- Modal -->
+<!-- MODAL -->
 <div id="myModal" class="modal">
     <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="modalImg">
+    <div class="modal-box">
+        <h3 id="modalTitle"></h3>
+        <p id="modalDesc"></p>
+    </div>
 </div>
 
 <footer>
@@ -189,14 +247,60 @@
 </footer>
 
 <script>
-function openModal(src) {
+
+/* MODAL */
+function openModal(title, desc) {
     document.getElementById("myModal").style.display = "block";
-    document.getElementById("modalImg").src = src;
+    document.getElementById("modalTitle").innerText = title;
+    document.getElementById("modalDesc").innerText = desc;
 }
 
 function closeModal() {
     document.getElementById("myModal").style.display = "none";
 }
+
+/* FILTER */
+function filterProjects(category) {
+    const projects = document.querySelectorAll('.project');
+    const buttons = document.querySelectorAll('.filters button');
+
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    projects.forEach(project => {
+        if(category === 'all' || project.classList.contains(category)){
+            project.style.display = "block";
+        } else {
+            project.style.display = "none";
+        }
+    });
+}
+
+/* AUTO SLIDER */
+let scrollAmount = 0;
+setInterval(() => {
+    const gallery = document.getElementById('gallery');
+    scrollAmount += 350;
+    if(scrollAmount > gallery.scrollWidth - gallery.clientWidth){
+        scrollAmount = 0;
+    }
+    gallery.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+    });
+}, 4000);
+
+/* ANIMATED ENTRANCE */
+window.addEventListener('scroll', () => {
+    const projects = document.querySelectorAll('.project');
+    projects.forEach(project => {
+        const rect = project.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 100){
+            project.classList.add('show');
+        }
+    });
+});
+
 </script>
 
 </body>
