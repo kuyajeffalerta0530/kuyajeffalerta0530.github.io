@@ -14,8 +14,7 @@
 
         header {
             padding: 50px 20px;
-            position: relative;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: auto;
         }
 
@@ -38,7 +37,7 @@
         }
 
         section {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: auto;
             padding: 40px 20px;
         }
@@ -65,12 +64,65 @@
             margin-bottom: 10px;
         }
 
+        /* 🔥 PROJECT GRID */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 🔥 MODAL LIGHTBOX */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .close {
+            position: absolute;
+            top: 40px;
+            right: 60px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+
         footer {
             text-align: center;
             padding: 20px;
             background: #0f172a;
             margin-top: 40px;
             color: #9ca3af;
+        }
+
+        @media(max-width: 768px){
+            .gallery {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -83,8 +135,6 @@
             <h1>Jeff Alerta</h1>
             <p>Digital Marketing | GHL Specialist | Tech Professional</p>
         </div>
-
-        <!-- 🔥 CHANGE image.jpg to your actual uploaded picture filename -->
         <img src="image.jpg" alt="Profile Picture" class="profile-img">
     </div>
 </header>
@@ -105,20 +155,49 @@
             <li>National TVET Trainer Certificate – Level 1 in Computer Systems Servicing NCII</li>
             <li>National Certificate in TRAINERS METHODOLOGY LEVEL 1</li>
             <li>Freelance 2D and 3D Designer</li>
-            <li>TESDA Certified – Programming (JAVA) NCIII (07-24-2023 – 09-15-2023)</li>
+            <li>TESDA Certified – Programming (JAVA) NCIII</li>
             <li>TESDA Certified - Computer System Servicing NC II</li>
             <li>TESDA Certified - RAC Servicing (DomRAC) NC II</li>
             <li>TESDA Certified – AutoCad Operator</li>
-            <li>GoHighLevel (GHL) CRM and Marketing Automation (Technical Skills / Digital Marketing Skills / Analytical Skills / Process Management Skills)</li>
-            <li>Business Intelligence and Basic Data Warehousing for Business Performance</li>
+            <li>GoHighLevel (GHL) CRM and Marketing Automation</li>
+            <li>Business Intelligence and Basic Data Warehousing</li>
             <li>Basic knowledge in construction works (estimate and design)</li>
         </ul>
     </div>
 </section>
 
+<section>
+    <h2>SCREENSHOT OF THE PROJECTS</h2>
+    <div class="gallery">
+        <img src="project1.jpg" onclick="openModal(this.src)">
+        <img src="project2.jpg" onclick="openModal(this.src)">
+        <img src="project3.jpg" onclick="openModal(this.src)">
+        <img src="project4.jpg" onclick="openModal(this.src)">
+        <img src="project5.jpg" onclick="openModal(this.src)">
+        <img src="project6.jpg" onclick="openModal(this.src)">
+    </div>
+</section>
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImg">
+</div>
+
 <footer>
     <p>© 2026 Jeff Alerta | All Rights Reserved</p>
 </footer>
+
+<script>
+function openModal(src) {
+    document.getElementById("myModal").style.display = "block";
+    document.getElementById("modalImg").src = src;
+}
+
+function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+}
+</script>
 
 </body>
 </html>
